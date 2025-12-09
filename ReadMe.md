@@ -1,6 +1,11 @@
-# SparkleMotionMini ESP-IDF Workspace
+# ESP-IDF Heartbeat Workspace
 
-This repository now focuses entirely on a single ESP-IDF application for the SparkleMotionMini. The previously checked-in bare-metal/CMake flow has been removed to keep the repo lightweight and aligned with Espressif's official tooling.
+This repository now focuses entirely on ESP-IDF heartbeat applications for Adafruit development boards. The previously checked-in bare-metal/CMake flow has been removed to keep the repo lightweight and aligned with Espressif's official tooling.
+
+Currently implemented projects:
+
+- `SparkleMotionMini/esp-idf` – ESP32-based SparkleMotionMini heartbeat (red LED on GPIO12).
+- `ESP32S3ReverseTFT/esp-idf` – ESP32-S3 Reverse TFT Feather heartbeat (status LED on GPIO13).
 
 ---
 
@@ -8,6 +13,9 @@ This repository now focuses entirely on a single ESP-IDF application for the Spa
 
 ```
 ├── ReadMe.md                         # Top-level overview (this file)
+├── ESP32S3ReverseTFT/
+│   ├── README.md                     # ESP32-S3 Reverse TFT notes
+│   └── esp-idf/                      # ESP-IDF application
 ├── SparkleMotionMini/
 │   ├── README.md                     # Board/project-specific notes
 │   └── esp-idf/                      # ESP-IDF application
@@ -53,6 +61,14 @@ pwsh toolchain/scripts/flash.ps1 -Port COM6 -Baud 921600
 pwsh toolchain/scripts/monitor.ps1 -Port COM6 -Baud 115200
 ```
 
+Reverse TFT example:
+
+```pwsh
+pwsh toolchain/scripts/build.ps1 -ProjectDir ESP32S3ReverseTFT/esp-idf -Target esp32s3
+pwsh toolchain/scripts/flash.ps1 -ProjectDir ESP32S3ReverseTFT/esp-idf -Target esp32s3 -Port COM7 -Baud 921600
+pwsh toolchain/scripts/monitor.ps1 -ProjectDir ESP32S3ReverseTFT/esp-idf -Port COM7 -Baud 115200
+```
+
 ### Bash / zsh / WSL
 
 ```bash
@@ -61,7 +77,15 @@ PORT=/dev/ttyUSB0 BAUD=921600 ./toolchain/scripts/flash.sh
 PORT=/dev/ttyUSB0 BAUD=115200 ./toolchain/scripts/monitor.sh
 ```
 
-All three scripts target `SparkleMotionMini/esp-idf` and assume the submodule lives in `third_party/esp-idf`. The wrappers call `idf.py set-target esp32` before building/flashing so the project is always configured for the correct chip.
+Reverse TFT example:
+
+```bash
+PROJECT_DIR=ESP32S3ReverseTFT/esp-idf IDF_TARGET=esp32s3 ./toolchain/scripts/build.sh
+PORT=/dev/ttyACM0 BAUD=921600 PROJECT_DIR=ESP32S3ReverseTFT/esp-idf IDF_TARGET=esp32s3 ./toolchain/scripts/flash.sh
+PORT=/dev/ttyACM0 BAUD=115200 PROJECT_DIR=ESP32S3ReverseTFT/esp-idf ./toolchain/scripts/monitor.sh
+```
+
+By default the scripts target `SparkleMotionMini/esp-idf` and assume the submodule lives in `third_party/esp-idf`. Override the target project with `-ProjectDir <dir> -Target <chip>` in PowerShell or `PROJECT_DIR=<dir> IDF_TARGET=<chip>` (and other environment variables such as `PORT`/`BAUD`) in Bash/zsh. The wrappers always run `idf.py set-target <chip>` before building or flashing.
 
 ---
 
@@ -73,10 +97,17 @@ If you prefer to drive `idf.py` yourself:
 cd d:/repos/adafruit
 pwsh third_party/esp-idf/export.ps1
 
+# SparkleMotionMini (ESP32)
 idf.py -C SparkleMotionMini/esp-idf set-target esp32
 idf.py -C SparkleMotionMini/esp-idf build
 idf.py -C SparkleMotionMini/esp-idf -p COM6 -b 921600 flash
 idf.py -C SparkleMotionMini/esp-idf -p COM6 monitor
+
+# ESP32-S3 Reverse TFT Feather
+idf.py -C ESP32S3ReverseTFT/esp-idf set-target esp32s3
+idf.py -C ESP32S3ReverseTFT/esp-idf build
+idf.py -C ESP32S3ReverseTFT/esp-idf -p COM7 -b 921600 flash
+idf.py -C ESP32S3ReverseTFT/esp-idf -p COM7 monitor
 ```
 
 Use `export.sh` in POSIX shells. Press `Ctrl+]` to exit the ESP-IDF monitor.

@@ -3,7 +3,13 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
-PROJECT_DIR="${REPO_ROOT}/SparkleMotionMini/esp-idf"
+PROJECT_SUBDIR="${PROJECT_DIR:-SparkleMotionMini/esp-idf}"
+if [[ "${PROJECT_SUBDIR}" == /* ]]; then
+    PROJECT_DIR="${PROJECT_SUBDIR}"
+else
+    PROJECT_DIR="${REPO_ROOT}/${PROJECT_SUBDIR}"
+fi
+
 IDF_PATH="${REPO_ROOT}/third_party/esp-idf"
 IDF_TARGET="${IDF_TARGET:-esp32}"
 PORT="${PORT:-}"
