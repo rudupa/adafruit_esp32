@@ -1,0 +1,21 @@
+menu "SparkleMotionMini configuration"
+
+config SPARKLE_LED_GPIO
+    int "Status LED GPIO"
+    default 12
+    help
+        GPIO number that drives the on-board red LED (labeled 12).
+
+config SPARKLE_HEARTBEAT_MS
+    int "Heartbeat interval (ms)"
+    default 500
+    help
+        Delay between LED toggles and heartbeat log messages.
+
+config SPARKLE_SERIAL_BAUD
+    int "Serial console baud rate"
+    default 115200
+    help
+        UART baud rate used by the ROM bootloader and ESP-IDF console.
+
+endmenu
