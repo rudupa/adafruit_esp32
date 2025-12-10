@@ -20,14 +20,6 @@ All build products live under `ESP32S3ReverseTFT/esp-idf/build/` and are created
 
 The helper scripts under `toolchain/scripts/` export the ESP-IDF environment and then proxy `idf.py`. Override the defaults to point at this project and target the ESP32-S3 MCU.
 
-### PowerShell
-
-```pwsh
-pwsh toolchain/scripts/build.ps1 -ProjectDir ESP32S3ReverseTFT/esp-idf -Target esp32s3
-pwsh toolchain/scripts/flash.ps1 -ProjectDir ESP32S3ReverseTFT/esp-idf -Target esp32s3 -Port COM6 -Baud 921600
-pwsh toolchain/scripts/monitor.ps1 -ProjectDir ESP32S3ReverseTFT/esp-idf -Port COM6 -Baud 115200
-```
-
 ### Bash / zsh / WSL
 
 ```bash
@@ -36,21 +28,29 @@ PORT=/dev/ttyACM0 BAUD=921600 PROJECT_DIR=ESP32S3ReverseTFT/esp-idf IDF_TARGET=e
 PORT=/dev/ttyACM0 BAUD=115200 PROJECT_DIR=ESP32S3ReverseTFT/esp-idf ./toolchain/scripts/monitor.sh
 ```
 
+### WSL combined helper
+
+```bash
+./ESP32S3ReverseTFT/scripts/build_flash.sh        # add --fullclean for a deep rebuild
+```
+
+This wrapper pins `IDF_TARGET=esp32s3` and routes everything through `scripts/wsl_build_flash.sh`, so you only need a single command to build, flash, and start `idf.py monitor` from WSL.
+
 Pass your local serial port via `-Port`/`PORT` and adjust baud rates as needed.
 
 ## Manual `idf.py` Flow
 
-```pwsh
-cd d:/repos/adafruit
-pwsh third_party/esp-idf/export.ps1
+```bash
+cd ~/repos/adafruit
+source third_party/esp-idf/export.sh
 
 idf.py -C ESP32S3ReverseTFT/esp-idf set-target esp32s3
 idf.py -C ESP32S3ReverseTFT/esp-idf build
-idf.py -C ESP32S3ReverseTFT/esp-idf -p COM6 -b 921600 flash
-idf.py -C ESP32S3ReverseTFT/esp-idf -p COM6 monitor
+idf.py -C ESP32S3ReverseTFT/esp-idf -p /dev/ttyACM0 -b 921600 flash
+idf.py -C ESP32S3ReverseTFT/esp-idf -p /dev/ttyACM0 monitor
 ```
 
-Use `export.sh` when running from Bash-based shells. Once the target is set to `esp32s3`, subsequent invocations can omit `set-target` unless you clean the configuration.
+Once the target is set to `esp32s3`, subsequent invocations can omit `set-target` unless you clean the configuration.
 
 ## Firmware Behavior
 
