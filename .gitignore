@@ -1,6 +1,11 @@
-SparkleMotionMini/esp-idf/build/
-SparkleMotionMini/esp-idf/sdkconfig
-SparkleMotionMini/esp-idf/sdkconfig.old
-ESP32S3ReverseTFT/esp-idf/build/
-ESP32S3ReverseTFT/esp-idf/sdkconfig
-ESP32S3ReverseTFT/esp-idf/sdkconfig.old
+# Build artifacts
+build/
+zephyr_app/build/
+**/build/
+
+# VS Code settings
+.vscode/
+
+# Python virtualenvs
+.venv/
+venv/

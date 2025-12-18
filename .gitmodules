@@ -1,6 +1,3 @@
-[submodule "third_party/esp-idf"]
-	path = third_party/esp-idf
-	url = https://github.com/espressif/esp-idf.git
 [submodule "tools/openocd-linux"]
 	path = tools/openocd-linux
 	url = https://github.com/espressif/openocd-esp32.git
